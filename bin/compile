@@ -27,6 +27,11 @@ MattesMigrateVersion="$(<${DataJSON} jq -r '.MattesMigrate.DefaultVersion')"
 GolangMigrateVersion="$(<${DataJSON} jq -r '.GolangMigrate.DefaultVersion')"
 TQVersion="$(<${DataJSON} jq -r '.tq.DefaultVersion')"
 
+
+# Force git to use SSH so go can fetch private packages
+git config --global url.ssh://git@github.com/.insteadOf https://github.com/
+
+
 # For specified versions of Go we need to keep concurrency.sh
 needConcurrency() {
     <"${DataJSON}" jq -e '.Go.NeedsConcurrency | any(. == "'${1}'")' &> /dev/null
